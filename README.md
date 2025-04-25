@@ -45,7 +45,7 @@ http://localhost/api/documentation
 ## ❤️ Запуск команды для нотификации
 
 ```bash
-docker compose exec app php artisan
+docker compose exec app php artisan notify:tasks
 ```
 
 ---
