@@ -1,0 +1,63 @@
+services:
+    nginx:
+        image: nginx:alpine
+        container_name: nginx
+        ports:
+            - "80:80"
+        volumes:
+            - ./docker/nginx/conf.d:/etc/nginx/conf.d
+            - ./docker/nginx/logs:/var/log/nginx
+            - .:/var/www/html
+        depends_on:
+            - app
+        networks:
+            - laravel
+
+    app:
+        build:
+            context: .
+            dockerfile: docker/php-fpm/Dockerfile
+        container_name: laravel-app
+        platform: linux/amd64
+        ports:
+            - "9000:9000"
+        volumes:
+            - .:/var/www/html
+        networks:
+            - laravel
+
+    mysql:
+        image: mysql:8.0
+        container_name: mysql-db
+        restart: unless-stopped
+        environment:
+            MYSQL_DATABASE: laravel
+            MYSQL_USER: laravel
+            MYSQL_PASSWORD: secret
+            MYSQL_ROOT_PASSWORD: root
+        ports:
+            - "3306:3306"
+        volumes:
+            - mysql-data:/var/lib/mysql
+        networks:
+            - laravel
+
+    queue:
+        build:
+            context: .
+            dockerfile: docker/php-fpm/Dockerfile
+        container_name: laravel-queue
+        restart: always
+        depends_on:
+            - app
+            - mysql
+        volumes:
+            - .:/var/www/html
+        networks:
+            - laravel
+
+networks:
+    laravel:
+
+volumes:
+    mysql-data:

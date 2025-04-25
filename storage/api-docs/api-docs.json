@@ -1,0 +1,57 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Test API для Telegram бота",
+        "description": "Документация для команд /start, /stop и уведомлений",
+        "contact": {
+            "email": "icrazy2001@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/telegram/webhook": {
+            "post": {
+                "summary": "Handle Telegram webhook",
+                "operationId": "8fcda04bb1281f11dc3a5f8a6a481076",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "message"
+                                ],
+                                "properties": {
+                                    "message": {
+                                        "properties": {
+                                            "text": {
+                                                "type": "string",
+                                                "example": "/start"
+                                            },
+                                            "chat": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 123456
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        }
+    }
+}
